@@ -34,6 +34,14 @@ func usage() {
 	`)
 }
 
+type ParamArr []Param
+func (arr ParamArr) Len() int {
+	return len(arr)
+}
+func (arr ParamArr) Get(index int) Param {
+	return arr[index]
+}
+
 func goTasks(task func(param Param), paramArr ParamArr, limit int) {
 	// goroutine 协程
 	// channel 信道
@@ -59,19 +67,13 @@ func goTasks(task func(param Param), paramArr ParamArr, limit int) {
 	quit <- 1
 }
 
+// 1. 定义任务函数
 func foo(param Param) {
 	fmt.Println(param.url)
 	time.Sleep(1000000000) //1s
 }
 
-type ParamArr []Param
-func (arr ParamArr) Len() int {
-	return len(arr)
-}
-func (arr ParamArr) Get(index int) Param {
-	return arr[index]
-}
-
+// 2. 定义参数结构体
 type Param struct {
 	url string
 }
@@ -91,6 +93,7 @@ func main() {
 	// 5、可以在全部完成时获得返回值(选择性)
 	//data := []interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
+	// 这样做的问题是，无法独立gowork
 	var paramArr ParamArr
 	paramArr = append(paramArr, Param{url: "http://www.baidu.com"})
 	paramArr = append(paramArr, Param{url: "http://www.baidu.com"})
