@@ -1,4 +1,4 @@
-package main
+package HuabanBatchUpload_GO
 
 import (
 	"fmt"
@@ -64,19 +64,13 @@ func goTasks(task func(param interface{}), dataArr TaskDataArr, limit int) {
 	quit <- 1
 }
 
-func _foo(param int) {
+// 1. 任务函数必须接受一个interface{}参数
+func foo(param interface{}) {
 	fmt.Println(param)
 	time.Sleep(1000000000) //1s
 }
 
-func foo(param interface{}) {
-	// TODO 通过反射获取的类型字符串或Kind，并不能用来更改interface{}变量类型
-	// TODO 不可能将interface{}参数向指定类型参数的函数转化，反过来可以
-	// TODO 可以通过switch遍历进行有限种类的互相转化
-	// TODO 可以通过实现接口来约束类型
-	_foo(param.(int))
-}
-
+// 2.定义一个参数数组结构体，实现Len() Get() 接口
 type IntArr []int
 func (arr IntArr) Len() int {
 	return len(arr)
